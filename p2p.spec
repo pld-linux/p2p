@@ -5,15 +5,14 @@
 %bcond_without	smp		# don't build SMP module
 %bcond_without	userspace	# don't build userspace module
 %bcond_with	verbose		# verbose build (V=1)
-#
-%define		_orig_name	p2p
-%define		_rel 1
+
 %define		no_install_post_compress_modules	1
-#
+
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
 Summary(pl):	P2P - rozszerzenie filtra pakietów identyfikuj±ce ruch P2P
 Name:		kernel-net-p2p
 Version:	0.3.0a
+%define		_rel 1
 Release:	%{_rel}@%{_kernel_ver_str}
 License:	GPL
 Group:		Base/Kernel
@@ -109,7 +108,7 @@ LD		= %{__ld}
 		\$(CC) \$(CFLAGS) \$(INCPATH) -c -o \$@ \$<
 .o.so:
 		\$(LD) -shared -o \$@ \$<
-all:		libipt_%{_orig_name}.so
+all:		libipt_p2p.so
 EOF
 %{__make}
 cd ..
@@ -136,7 +135,7 @@ for cfg in %{?with_dist_kernel:%{?with_smp:smp} up}%{!?with_dist_kernel:nondist}
 	SUBDIRS=$PWD \
 	O=$PWD \
 	%{?with_verbose:V=1}
-    mv ipt_%{_orig_name}.ko ipt_%{_orig_name}-$cfg.ko
+    mv ipt_p2p.ko ipt_p2p-$cfg.ko
 done
 cd ..
 %endif
@@ -146,16 +145,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %if %{with userspace}
 install -d $RPM_BUILD_ROOT%{_libdir}/iptables
-install iptables/libipt_%{_orig_name}.so $RPM_BUILD_ROOT%{_libdir}/iptables
+install iptables/libipt_p2p.so $RPM_BUILD_ROOT%{_libdir}/iptables
 %endif
 
 %if %{with kernel}
 install -d $RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}{,smp}/kernel/net/ipv4/netfilter
-install kernel/ipt_%{_orig_name}-%{?with_dist_kernel:up}%{!?with_dist_kernel:nondist}.ko \
-	$RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}/kernel/net/ipv4/netfilter/ipt_%{_orig_name}.ko
+install kernel/ipt_p2p-%{?with_dist_kernel:up}%{!?with_dist_kernel:nondist}.ko \
+	$RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}/kernel/net/ipv4/netfilter/ipt_p2p.ko
 %if %{with smp} && %{with dist_kernel}
-install kernel/ipt_%{_orig_name}-smp.ko \
-	$RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}smp/kernel/net/ipv4/netfilter/ipt_%{_orig_name}.ko
+install kernel/ipt_p2p-smp.ko \
+	$RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}smp/kernel/net/ipv4/netfilter/ipt_p2p.ko
 %endif
 %endif
 
