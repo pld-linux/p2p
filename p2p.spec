@@ -11,7 +11,7 @@
 %define		no_install_post_compress_modules	1
 #
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
-Summary(pl):	P2P - rozszerzenie filtru pakietów identyfikuj±ce ruch P2P
+Summary(pl):	P2P - rozszerzenie filtra pakietów identyfikuj±ce ruch P2P
 Name:		kernel-net-p2p
 Version:	0.3.0a
 Release:	%{_rel}@%{_kernel_ver_str}
@@ -48,7 +48,7 @@ Ten pakiet zawiera modu³ j±dra Linuksa.
 
 %package -n kernel-smp-net-p2p
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
-Summary(pl):	P2P - rozszerzenie filtru pakietów identyfikuj±ce ruch P2P
+Summary(pl):	P2P - rozszerzenie filtra pakietów identyfikuj±ce ruch P2P
 Release:	%{_rel}@%{_kernel_ver_str}
 Group:		Base/Kernel
 %{?with_dist_kernel:%requires_releq_kernel_smp}
@@ -73,7 +73,7 @@ Ten pakiet zawiera modu³ j±dra Linuksa SMP.
 
 %package -n iptables-p2p
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
-Summary(pl):	P2P - rozszerzenie filtru pakietów identyfikuj±ce ruch P2P
+Summary(pl):	P2P - rozszerzenie filtra pakietów identyfikuj±ce ruch P2P
 Release:	%{_rel}
 Group:		Base/Kernel
 Requires:	iptables
