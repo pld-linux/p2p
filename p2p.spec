@@ -30,10 +30,21 @@ Requires(post,postun):	/sbin/depmod
 Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-- --empty--
+iptables-p2p is a P2P match module for iptables. It supports the
+detection of the following protocols: FastTrack (KaZaa, Grokster,
+...), eDonkey (eDonkey, eMule, ...), Direct Connect, Gnutella
+(regular clients and Shareaza's gnutella 2), BitTorrent, OpenFT
+(giFT).
+
+This package contains Linux kernel module.
 
 %description -l pl
-- --pusty--
+iptables-p2p to modu³ dopasowywania P2P dla iptables. Obs³uguje
+wykrywanie nastêpuj±cych protoko³ów: FastTrack (KaZaa, Grokster...),
+eDonkey (eDonkey, eMule...), Direct Connect, Gnutella (zwykli klienci
+oraz gnutella 2 Shareazy), BitTorrent, OpenFT (giFT).
+
+Ten pakiet zawiera modu³ j±dra Linuksa.
 
 %package -n kernel-smp-net-p2p
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
@@ -44,10 +55,21 @@ Group:		Base/Kernel
 Requires(post,postun):	/sbin/depmod
 
 %description -n kernel-smp-net-p2p
-- --empty--
+iptables-p2p is a P2P match module for iptables. It supports the
+detection of the following protocols: FastTrack (KaZaa, Grokster,
+...), eDonkey (eDonkey, eMule, ...), Direct Connect, Gnutella
+(regular clients and Shareaza's gnutella 2), BitTorrent, OpenFT
+(giFT).
+
+This package contains Linux SMP kernel module.
 
 %description -n kernel-smp-net-p2p -l pl
-- --pusty--
+iptables-p2p to modu³ dopasowywania P2P dla iptables. Obs³uguje
+wykrywanie nastêpuj±cych protoko³ów: FastTrack (KaZaa, Grokster...),
+eDonkey (eDonkey, eMule...), Direct Connect, Gnutella (zwykli klienci
+oraz gnutella 2 Shareazy), BitTorrent, OpenFT (giFT).
+
+Ten pakiet zawiera modu³ j±dra Linuksa SMP.
 
 %package -n iptables-p2p
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
@@ -57,10 +79,17 @@ Group:		Base/Kernel
 Requires:	iptables
 
 %description -n iptables-p2p
-- --empty--
+iptables-p2p is a P2P match module for iptables. It supports the
+detection of the following protocols: FastTrack (KaZaa, Grokster,
+...), eDonkey (eDonkey, eMule, ...), Direct Connect, Gnutella
+(regular clients and Shareaza's gnutella 2), BitTorrent, OpenFT
+(giFT).
 
 %description -n iptables-p2p -l pl
-- --pusty--
+iptables-p2p to modu³ dopasowywania P2P dla iptables. Obs³uguje
+wykrywanie nastêpuj±cych protoko³ów: FastTrack (KaZaa, Grokster...),
+eDonkey (eDonkey, eMule...), Direct Connect, Gnutella (zwykli klienci
+oraz gnutella 2 Shareazy), BitTorrent, OpenFT (giFT).
 
 %prep
 %setup -q -n iptables-p2p-%{version}
@@ -144,9 +173,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %postun -n kernel-smp-net-p2p
 %depmod %{_kernel_ver}
-
-%post -n iptables-p2p
-%postun -n iptables-p2p
 
 %if %{with kernel}
 %files
