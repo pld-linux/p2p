@@ -1,0 +1,88 @@
+--- iptables-p2p-0.3.0a/kernel/Makefile.orig	2004-01-01 21:54:23.000000000 +0100
++++ iptables-p2p-0.3.0a/kernel/Makefile	2004-03-14 20:19:13.803190632 +0100
+@@ -1,6 +1,3 @@
+-# $Id$
+-###############################################################################
+-
+ SOURCES = \
+ 	main.c \
+ 	match_bittorrent.c \
+@@ -11,78 +8,5 @@
+ OBJECTS = \
+ 	$(SOURCES:%.c=%.o)
+ 
+-TARGET_24 = ipt_p2p.o
+-TARGET_26 = ipt_p2p.ko
+-
+-###############################################################################
+-
+-CC = \
+-	gcc
+-
+-CFLAGS = \
+-	-O3
+-
+-KERNELDIR = \
+-	/lib/modules/$(shell uname -r)/build
+-
+-KERNELINC = \
+-	$(KERNELDIR)/include
+-
+-# This is not pretty. How can we do this better?
+-ifdef P2P_COMMON
+-    INCLUDES+=-I$(P2P_COMMON)
+-endif
+-
+-PWD = \
+-	$(shell pwd)
+-
+-COMMON = \
+-	$(PWD)/../common
+-
+-INCLUDES += \
+-	-I$(COMMON) \
+-	-I$(KERNELINC) \
+-	-I$(KERNELINC)/asm/mach-default
+-
+-CPPFLAGS += \
+-	-D__KERNEL__ -DMODULE $(INCLUDES)
+-
+-###############################################################################
+-# Common Stuff
+-###############################################################################
+-
+-all: linux-2.4
+-
+-
+-.PHONY: clean
+-
+-clean:
+-	$(RM) $(OBJECTS)
+-	$(RM) $(TARGET_24)
+-	$(RM) $(TARGET_26)
+-	$(RM) .*.o.cmd
+-	$(RM) .*.ko.cmd
+-	$(RM) ipt_p2p.mod.*
+-
+-
+-###############################################################################
+-# Linux 2.4 Stuff
+-###############################################################################
+-
+-linux-2.4: $(TARGET_24)
+-
+-$(TARGET_24): $(OBJECTS)
+-	$(LD) -r -o $@ $(OBJECTS)
+-
+-###############################################################################
+-# Linux 2.6 Stuff
+-###############################################################################
+-
+ obj-m := ipt_p2p.o
+ ipt_p2p-objs := $(OBJECTS)
+-
+-linux-2.6: $(TARGET_26)
+-
+-$(TARGET_26):
+-	$(MAKE) -C $(KERNELDIR) SUBDIRS=$(PWD) P2P_COMMON=$(COMMON) modules
+-
