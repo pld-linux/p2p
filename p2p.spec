@@ -7,7 +7,7 @@
 %bcond_with	verbose		# verbose build (V=1)
 #
 %define		_orig_name	p2p
-%define		_rel 0.1
+%define		_rel 1
 %define		no_install_post_compress_modules	1
 #
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
