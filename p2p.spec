@@ -18,7 +18,7 @@ Release:	%{_rel}@%{_kernel_ver_str}
 License:	GPL
 Group:		Base/Kernel
 Source0:	http://mega.ist.utl.pt/~filipe/iptables-p2p/iptables-p2p-%{version}.tar.gz
-# Source0-md5:	5cf214c6132d88ac5f0c859e6b8ae792
+# Source0-md5:	79832eb411003fb35f0c6a0985649c14
 Patch0:		%{name}-Makefile.patch
 URL:		http://mega.ist.utl.pt/~filipe/iptables-p2p/
 %{?with_userspace:BuildRequires:	iptables-devel}
