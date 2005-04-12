@@ -16,10 +16,11 @@ Version:	0.3.0a
 Release:	%{_rel}@%{_kernel_ver_str}
 License:	GPL
 Group:		Base/Kernel
-Source0:	http://mega.ist.utl.pt/~filipe/iptables-p2p/iptables-p2p-%{version}.tar.gz
+Source0:	http://dl.sourceforge.net/iptables-p2p/iptables-p2p-%{version}.tar.gz
 # Source0-md5:	79832eb411003fb35f0c6a0985649c14
 Patch0:		%{name}-Makefile.patch
-URL:		http://mega.ist.utl.pt/~filipe/iptables-p2p/
+Patch1:		%{name}-iptables.patch
+URL:		http://sourceforge.net/projects/iptables-p2p/
 %{?with_userspace:BuildRequires:	iptables-devel}
 %if %{with kernel} && %{with dist_kernel}
 BuildRequires:	kernel-module-build
@@ -93,6 +94,7 @@ oraz gnutella 2 Shareazy), BitTorrent, OpenFT (giFT).
 %prep
 %setup -q -n iptables-p2p-%{version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 %if %{with userspace}
@@ -100,7 +102,7 @@ oraz gnutella 2 Shareazy), BitTorrent, OpenFT (giFT).
 cd iptables
 cat << EOF > Makefile
 CC		= %{__cc}
-CFLAGS		= %{rpmcflags} -fPIC -DIPTABLES_VERSION=\\"1.2.9\\"
+CFLAGS		= %{rpmcflags} -fPIC -DIPTABLES_VERSION=\\"1.3.1\\"
 INCPATH		= -I../common
 LD		= %{__ld}
 .SUFFIXES:	.c .o .so
@@ -124,18 +126,18 @@ for cfg in %{?with_dist_kernel:%{?with_smp:smp} up}%{!?with_dist_kernel:nondist}
     fi
     rm -rf include
     install -d include/{linux,config}
-    %{__make} -C %{_kernelsrcdir} mrproper \
-	SUBDIRS=$PWD \
-	O=$PWD \
-	%{?with_verbose:V=1}
     ln -sf %{_kernelsrcdir}/config-$cfg .config
-    ln -sf %{_kernelsrcdir}/include/linux/autoconf-${cfg}.h include/linux/autoconf.h
+    ln -sf %{_kernelsrcdir}/include/linux/autoconf-$cfg.h include/linux/autoconf.h
+    ln -sf %{_kernelsrcdir}/include/asm-%{_target_base_arch} include/asm
     touch include/config/MARKER
+    %{__make} -C %{_kernelsrcdir} clean \
+        RCS_FIND_IGNORE="-name '*.ko' -o" \
+        M=$PWD O=$PWD \
+        %{?with_verbose:V=1}
     %{__make} -C %{_kernelsrcdir} modules \
-	SUBDIRS=$PWD \
-	O=$PWD \
-	%{?with_verbose:V=1}
-    mv ipt_p2p.ko ipt_p2p-$cfg.ko
+        M=$PWD O=$PWD \
+        %{?with_verbose:V=1}
+    mv ipt_p2p{,-$cfg}.ko
 done
 cd ..
 %endif
