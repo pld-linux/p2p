@@ -1,0 +1,11 @@
+diff -ur iptables-p2p-0.3.0a/iptables/libipt_p2p.c iptables-p2p-0.3.0a-ted/iptables/libipt_p2p.c
+--- iptables-p2p-0.3.0a/iptables/libipt_p2p.c	2004-02-29 10:53:13.000000000 +1000
++++ iptables-p2p-0.3.0a-ted/iptables/libipt_p2p.c	2005-03-31 19:37:03.000000000 +1000
+@@ -70,6 +70,7 @@
+ {
+     NULL,
+     "p2p",
++    0,
+     IPTABLES_VERSION,
+     IPT_ALIGN(sizeof(struct ipt_p2p_info)),
+     IPT_ALIGN(sizeof(struct ipt_p2p_info)),
