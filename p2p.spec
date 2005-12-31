@@ -99,10 +99,11 @@ oraz gnutella 2 Shareazy), BitTorrent, OpenFT (giFT).
 %build
 %if %{with userspace}
 # iptables module
+IPTABLES_VERSION=`rpm -q --queryformat '%{V}' iptables`
 cd iptables
 cat << EOF > Makefile
 CC		= %{__cc}
-CFLAGS		= %{rpmcflags} -fPIC -DIPTABLES_VERSION=\\"1.3.3\\"
+CFLAGS		= %{rpmcflags} -fPIC -DIPTABLES_VERSION=\\"$IPTABLES_VERSION\\"
 INCPATH		= -I../common
 LD		= %{__ld}
 .SUFFIXES:	.c .o .so
