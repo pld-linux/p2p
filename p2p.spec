@@ -18,7 +18,7 @@ Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
 Summary(pl):	P2P - rozszerzenie filtra pakietów identyfikuj±ce ruch P2P
 Name:		kernel-net-p2p
 Version:	0.3.0a
-%define		_rel 5
+%define		_rel 6
 Release:	%{_rel}@%{_kernel_ver_str}
 License:	GPL
 Group:		Base/Kernel
@@ -139,8 +139,7 @@ for cfg in %{?with_dist_kernel:%{?with_smp:smp} up}%{!?with_dist_kernel:nondist}
 %ifarch ppc ppc64
         install -d include/asm
         [ ! -d %{_kernelsrcdir}/include/asm-powerpc ] || ln -sf %{_kernelsrcdir}/include/asm-powerpc/* include/asm
-        [ ! -d %{_kernelsrcdir}/include/asm-%{_target_base_arch} ] || ln -snf %{_kernelsrcdir}/include/asm-%{_target_base_a
-rch}/* include/asm
+        [ ! -d %{_kernelsrcdir}/include/asm-%{_target_base_arch} ] || ln -snf %{_kernelsrcdir}/include/asm-%{_target_base_arch}/* include/asm
 %else
         ln -sf %{_kernelsrcdir}/include/asm-%{_target_base_arch} include/asm
 %endif
