@@ -14,11 +14,11 @@
 
 %define		iptables_ver	1.3.3
 
+%define		_rel 7
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
 Summary(pl):	P2P - rozszerzenie filtra pakietów identyfikuj±ce ruch P2P
 Name:		kernel-net-p2p
 Version:	0.3.0a
-%define		_rel 7
 Release:	%{_rel}@%{_kernel_ver_str}
 License:	GPL
 Group:		Base/Kernel
@@ -38,9 +38,8 @@ Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 iptables-p2p is a P2P match module for iptables. It supports the
 detection of the following protocols: FastTrack (KaZaa, Grokster,
-...), eDonkey (eDonkey, eMule, ...), Direct Connect, Gnutella
-(regular clients and Shareaza's gnutella 2), BitTorrent, OpenFT
-(giFT).
+...), eDonkey (eDonkey, eMule, ...), Direct Connect, Gnutella (regular
+clients and Shareaza's gnutella 2), BitTorrent, OpenFT (giFT).
 
 This package contains Linux kernel module.
 
@@ -63,9 +62,8 @@ Requires(post,postun):	/sbin/depmod
 %description -n kernel-smp-net-p2p
 iptables-p2p is a P2P match module for iptables. It supports the
 detection of the following protocols: FastTrack (KaZaa, Grokster,
-...), eDonkey (eDonkey, eMule, ...), Direct Connect, Gnutella
-(regular clients and Shareaza's gnutella 2), BitTorrent, OpenFT
-(giFT).
+...), eDonkey (eDonkey, eMule, ...), Direct Connect, Gnutella (regular
+clients and Shareaza's gnutella 2), BitTorrent, OpenFT (giFT).
 
 This package contains Linux SMP kernel module.
 
@@ -87,9 +85,8 @@ Requires:	iptables
 %description -n iptables-p2p
 iptables-p2p is a P2P match module for iptables. It supports the
 detection of the following protocols: FastTrack (KaZaa, Grokster,
-...), eDonkey (eDonkey, eMule, ...), Direct Connect, Gnutella
-(regular clients and Shareaza's gnutella 2), BitTorrent, OpenFT
-(giFT).
+...), eDonkey (eDonkey, eMule, ...), Direct Connect, Gnutella (regular
+clients and Shareaza's gnutella 2), BitTorrent, OpenFT (giFT).
 
 %description -n iptables-p2p -l pl
 iptables-p2p to modu³ dopasowywania P2P dla iptables. Obs³uguje
@@ -108,16 +105,17 @@ oraz gnutella 2 Shareazy), BitTorrent, OpenFT (giFT).
 # IPTABLES_VERSION=`rpm -q --queryformat '%{V}' iptables`
 IPTABLES_VERSION="%{iptables_ver}"
 cd iptables
-cat << EOF > Makefile
+cat << 'EOF' > Makefile
 CC		= %{__cc}
-CFLAGS		= %{rpmcflags} -fPIC -DIPTABLES_VERSION=\\"$IPTABLES_VERSION\\"
+CFLAGS		= %{rpmcflags} -fPIC -DIPTABLES_VERSION=\"%{iptables_ver}\"
+#"-vim
 INCPATH		= -I../common
 LD		= %{__ld}
 .SUFFIXES:	.c .o .so
 .c.o:
-		\$(CC) \$(CFLAGS) \$(INCPATH) -c -o \$@ \$<
+		$(CC) $(CFLAGS) $(INCPATH) -c -o $@ $<
 .o.so:
-		\$(LD) -shared -o \$@ \$<
+		$(LD) -shared -o $@ $<
 all:		libipt_p2p.so
 EOF
 %{__make}
@@ -129,30 +127,30 @@ cd ..
 cd kernel
 cp ../common/ipt_p2p.h .
 for cfg in %{?with_dist_kernel:%{?with_smp:smp} up}%{!?with_dist_kernel:nondist}; do
-    if [ ! -r "%{_kernelsrcdir}/config-$cfg" ]; then
+	if [ ! -r "%{_kernelsrcdir}/config-$cfg" ]; then
 	exit 1
-    fi
-    rm -rf include
-    install -d include/{linux,config}
-    ln -sf %{_kernelsrcdir}/config-$cfg .config
-    ln -sf %{_kernelsrcdir}/include/linux/autoconf-$cfg.h include/linux/autoconf.h
+	fi
+	rm -rf include
+	install -d include/{linux,config}
+	ln -sf %{_kernelsrcdir}/config-$cfg .config
+	ln -sf %{_kernelsrcdir}/include/linux/autoconf-$cfg.h include/linux/autoconf.h
 %ifarch ppc ppc64
-        install -d include/asm
-        [ ! -d %{_kernelsrcdir}/include/asm-powerpc ] || ln -sf %{_kernelsrcdir}/include/asm-powerpc/* include/asm
-        [ ! -d %{_kernelsrcdir}/include/asm-%{_target_base_arch} ] || ln -snf %{_kernelsrcdir}/include/asm-%{_target_base_arch}/* include/asm
+	install -d include/asm
+	[ ! -d %{_kernelsrcdir}/include/asm-powerpc ] || ln -sf %{_kernelsrcdir}/include/asm-powerpc/* include/asm
+	[ ! -d %{_kernelsrcdir}/include/asm-%{_target_base_arch} ] || ln -snf %{_kernelsrcdir}/include/asm-%{_target_base_arch}/* include/asm
 %else
-        ln -sf %{_kernelsrcdir}/include/asm-%{_target_base_arch} include/asm
+	ln -sf %{_kernelsrcdir}/include/asm-%{_target_base_arch} include/asm
 %endif
-    ln -sf %{_kernelsrcdir}/Module.symvers-$cfg Module.symvers
-    touch include/config/MARKER
-    %{__make} -C %{_kernelsrcdir} clean \
-        RCS_FIND_IGNORE="-name '*.ko' -o" \
-        M=$PWD O=$PWD \
-        %{?with_verbose:V=1}
-    %{__make} -C %{_kernelsrcdir} modules \
-        M=$PWD O=$PWD \
-        %{?with_verbose:V=1}
-    mv ipt_p2p{,-$cfg}.ko
+	ln -sf %{_kernelsrcdir}/Module.symvers-$cfg Module.symvers
+	touch include/config/MARKER
+	%{__make} -C %{_kernelsrcdir} clean \
+		RCS_FIND_IGNORE="-name '*.ko' -o" \
+		M=$PWD O=$PWD \
+		%{?with_verbose:V=1}
+	%{__make} -C %{_kernelsrcdir} modules \
+		M=$PWD O=$PWD \
+		%{?with_verbose:V=1}
+	mv ipt_p2p{,-$cfg}.ko
 done
 cd ..
 %endif
