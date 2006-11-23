@@ -105,30 +105,26 @@ oraz gnutella 2 Shareazy), BitTorrent, OpenFT (giFT).
 # iptables module
 # IPTABLES_VERSION=`rpm -q --queryformat '%{V}' iptables`
 IPTABLES_VERSION="%{iptables_ver}"
-cd iptables
-cat << 'EOF' > Makefile
+cat << 'EOF' > iptables/Makefile
 CC		= %{__cc}
 CFLAGS		= %{rpmcflags} -fPIC -DIPTABLES_VERSION=\"%{iptables_ver}\"
 #"-vim
 INCPATH		= -I../common
-LD		= %{__ld}
+LDFLAGS		= %{rpmldflags}
 .SUFFIXES:	.c .o .so
 .c.o:
 		$(CC) $(CFLAGS) $(INCPATH) -c -o $@ $<
 .o.so:
-		$(LD) -shared -o $@ $<
+		$(CC) $(LDFLAGS) -shared -o $@ $<
 all:		libipt_p2p.so
 EOF
-%{__make}
-cd ..
+%{__make} -C iptables
 %endif
 
 %if %{with kernel}
 # kernel module(s)
-cd kernel
-cp ../common/ipt_p2p.h .
-%build_kernel_modules -m ipt_p2p
-cd ..
+cp common/ipt_p2p.h kernel
+%build_kernel_modules -C kernel -m ipt_p2p
 %endif
 
 %install
