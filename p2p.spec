@@ -2,6 +2,7 @@
 # Conditional build:
 %bcond_without	dist_kernel	# allow non-distribution kernel
 %bcond_without	kernel		# don't build kernel modules
+%bcond_without	up		# don't build UP module
 %bcond_without	smp		# don't build SMP module
 %bcond_without	userspace	# don't build userspace module
 %bcond_with	verbose		# verbose build (V=1)
@@ -19,7 +20,7 @@
 
 %define		iptables_ver	1.3.3
 
-%define		_rel 10
+%define		_rel 11
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
 Summary(pl):	P2P - rozszerzenie filtra pakietów identyfikuj±ce ruch P2P
 Name:		kernel%{_alt_kernel}-net-p2p
@@ -161,8 +162,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %if %{with kernel}
 %files
+%if %{with up} || %{without dist_kernel}
 %defattr(644,root,root,755)
 /lib/modules/%{_kernel_ver}/kernel/net/ipv4/netfilter/*
+%endif
 
 %if %{with smp} && %{with dist_kernel}
 %files -n kernel%{_alt_kernel}-smp-net-p2p
