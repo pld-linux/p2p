@@ -20,7 +20,7 @@
 
 %define		iptables_ver	1.3.3
 
-%define		_rel 51
+%define		_rel 52
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
 Summary(pl):	P2P - rozszerzenie filtra pakietów identyfikuj±ce ruch P2P
 Name:		kernel%{_alt_kernel}-net-p2p
