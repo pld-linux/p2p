@@ -23,7 +23,7 @@
 %define		_rel 10
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
 Summary(pl.UTF-8):	P2P - rozszerzenie filtra pakietów identyfikujące ruch P2P
-Name:		kernel%{_alt_kernel}-net-p2p
+Name:		p2p
 Version:	0.3.0a
 Release:	%{_rel}@%{_kernel_ver_str}
 License:	GPL
@@ -51,6 +51,30 @@ clients and Shareaza's gnutella 2), BitTorrent, OpenFT (giFT).
 This package contains Linux kernel module.
 
 %description -l pl.UTF-8
+iptables-p2p to moduł dopasowywania P2P dla iptables. Obsługuje
+wykrywanie następujących protokołów: FastTrack (KaZaa, Grokster...),
+eDonkey (eDonkey, eMule...), Direct Connect, Gnutella (zwykli klienci
+oraz gnutella 2 Shareazy), BitTorrent, OpenFT (giFT).
+
+Ten pakiet zawiera moduł jądra Linuksa.
+
+%package -n kernel%{_alt_kernel}-net-p2p
+Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
+Summary(pl.UTF-8):	P2P - rozszerzenie filtra pakietów identyfikujące ruch P2P
+Release:	%{_rel}@%{_kernel_ver_str}
+Group:		Base/Kernel
+%{?with_dist_kernel:%requires_releq_kernel_up}
+Requires(post,postun):	/sbin/depmod
+
+%description -n kernel%{_alt_kernel}-net-p2p
+iptables-p2p is a P2P match module for iptables. It supports the
+detection of the following protocols: FastTrack (KaZaa, Grokster,
+...), eDonkey (eDonkey, eMule, ...), Direct Connect, Gnutella (regular
+clients and Shareaza's gnutella 2), BitTorrent, OpenFT (giFT).
+
+This package contains Linux kernel module.
+
+%description -n kernel%{_alt_kernel}-net-p2p -l pl.UTF-8
 iptables-p2p to moduł dopasowywania P2P dla iptables. Obsługuje
 wykrywanie następujących protokołów: FastTrack (KaZaa, Grokster...),
 eDonkey (eDonkey, eMule...), Direct Connect, Gnutella (zwykli klienci
@@ -148,10 +172,10 @@ install iptables/libipt_p2p.so $RPM_BUILD_ROOT%{_libdir}/iptables
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
+%post -n kernel%{_alt_kernel}-net-p2p
 %depmod %{_kernel_ver}
 
-%postun
+%postun -n kernel%{_alt_kernel}-net-p2p
 %depmod %{_kernel_ver}
 
 %post -n kernel%{_alt_kernel}-smp-net-p2p
@@ -161,7 +185,7 @@ rm -rf $RPM_BUILD_ROOT
 %depmod %{_kernel_ver}smp
 
 %if %{with kernel}
-%files
+%files -n kernel%{_alt_kernel}-net-p2p
 %if %{with up} || %{without dist_kernel}
 %defattr(644,root,root,755)
 /lib/modules/%{_kernel_ver}/kernel/net/ipv4/netfilter/*
