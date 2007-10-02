@@ -25,7 +25,7 @@ Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
 Summary(pl.UTF-8):	P2P - rozszerzenie filtra pakietów identyfikujące ruch P2P
 Name:		p2p
 Version:	0.3.0a
-Release:	%{_rel}@%{_kernel_ver_str}
+Release:	%{_rel}
 License:	GPL
 Group:		Base/Kernel
 Source0:	http://dl.sourceforge.net/iptables-p2p/iptables-p2p-%{version}.tar.gz
