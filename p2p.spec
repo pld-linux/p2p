@@ -8,12 +8,16 @@
 %bcond_with	verbose		# verbose build (V=1)
 %bcond_with	grsec_kernel	# build for kernel-grsecurity
 #
-%if %{with kernel} && %{with dist_kernel} && %{with grsec_kernel}
-%define	alt_kernel	grsecurity
-%endif
-#
 %ifarch sparc
 %undefine	with_smp
+%endif
+#
+%if %{without kernel}
+%undefine	with_dist_kernel
+%endif
+#
+%if %{with kernel} && %{with dist_kernel} && %{with grsec_kernel}
+%define	alt_kernel	grsecurity
 %endif
 
 %define		no_install_post_compress_modules	1
@@ -34,12 +38,10 @@ Patch0:		kernel-net-p2p-Makefile.patch
 Patch1:		kernel-net-p2p-iptables.patch
 URL:		http://sourceforge.net/projects/iptables-p2p/
 %{?with_userspace:BuildRequires:	iptables-devel}
-%if %{with kernel} && %{with dist_kernel}
-BuildRequires:	kernel%{_alt_kernel}-module-build
+%if %{with kernel}
+%{?with_dist_kernel:BuildRequires:	kernel%{_alt_kernel}-module-build}
 BuildRequires:	rpmbuild(macros) >= 1.330
 %endif
-%{?with_dist_kernel:%requires_releq_kernel_up}
-Requires(post,postun):	/sbin/depmod
 Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -133,8 +135,6 @@ oraz gnutella 2 Shareazy), BitTorrent, OpenFT (giFT).
 %build
 %if %{with userspace}
 # iptables module
-# IPTABLES_VERSION=`rpm -q --queryformat '%{V}' iptables`
-IPTABLES_VERSION="%{iptables_ver}"
 cat << 'EOF' > iptables/Makefile
 CC		= %{__cc}
 CFLAGS		= %{rpmcflags} -fPIC -DIPTABLES_VERSION=\"%{iptables_ver}\"
