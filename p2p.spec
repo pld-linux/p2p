@@ -185,8 +185,8 @@ rm -rf $RPM_BUILD_ROOT
 %depmod %{_kernel_ver}smp
 
 %if %{with kernel}
-%files -n kernel%{_alt_kernel}-net-p2p
 %if %{with up} || %{without dist_kernel}
+%files -n kernel%{_alt_kernel}-net-p2p
 %defattr(644,root,root,755)
 /lib/modules/%{_kernel_ver}/kernel/net/ipv4/netfilter/*
 %endif
