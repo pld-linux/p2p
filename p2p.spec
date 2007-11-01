@@ -25,7 +25,7 @@
 %define		no_install_post_compress_modules	1
 %define		iptables_ver	1.3.3
 
-%define		_rel	55
+%define		_rel	56
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
 Summary(pl):	P2P - rozszerzenie filtra pakietów identyfikuj±ce ruch P2P
 Name:		p2p
