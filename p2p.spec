@@ -1,15 +1,8 @@
-#
 # Conditional build:
 %bcond_without	dist_kernel	# allow non-distribution kernel
 %bcond_without	kernel		# don't build kernel modules
-%bcond_without	up		# don't build UP module
-%bcond_without	smp		# don't build SMP module
 %bcond_without	userspace	# don't build userspace module
 %bcond_with	verbose		# verbose build (V=1)
-
-%ifarch sparc
-%undefine	with_smp
-%endif
 
 %if %{without kernel}
 %undefine	with_dist_kernel
@@ -17,16 +10,19 @@
 %if "%{_alt_kernel}" != "%{nil}"
 %undefine	with_userspace
 %endif
+%if %{without userspace}
+# nothing to be placed to debuginfo package
+%define		_enable_debug_packages	0
+%endif
 
-%define		no_install_post_compress_modules	1
+%define		rel 	64
 %define		iptables_ver	1.3.3
-
 %define		pname	p2p
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
 Summary(pl.UTF-8):	P2P - rozszerzenie filtra pakietów identyfikujące ruch P2P
 Name:		%{pname}%{_alt_kernel}
 Version:	0.3.0a
-Release:	63
+Release:	%{rel}
 License:	GPL
 Group:		Base/Kernel
 Source0:	http://dl.sourceforge.net/iptables-p2p/iptables-p2p-%{version}.tar.gz
@@ -60,9 +56,11 @@ Ten pakiet zawiera moduł jądra Linuksa.
 %package -n kernel%{_alt_kernel}-net-p2p
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
 Summary(pl.UTF-8):	P2P - rozszerzenie filtra pakietów identyfikujące ruch P2P
+Release:	%{rel}@%{_kernel_vermagic}
 Group:		Base/Kernel
-%{?with_dist_kernel:Requires:	kernel%{_alt_kernel}(vermagic) = %{_kernel_ver}}
 Requires(post,postun):	/sbin/depmod
+%{?with_dist_kernel:Requires:	kernel%{_alt_kernel}(vermagic) = %{_kernel_ver}}
+Obsoletes:	kernel%{_alt_kernel}-smp-net-p2p
 
 %description -n kernel%{_alt_kernel}-net-p2p
 iptables-p2p is a P2P match module for iptables. It supports the
@@ -80,32 +78,10 @@ oraz gnutella 2 Shareazy), BitTorrent, OpenFT (giFT).
 
 Ten pakiet zawiera moduł jądra Linuksa.
 
-%package -n kernel%{_alt_kernel}-smp-net-p2p
-Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
-Summary(pl.UTF-8):	P2P - rozszerzenie filtra pakietów identyfikujące ruch P2P
-Group:		Base/Kernel
-%{?with_dist_kernel:Requires:	kernel%{_alt_kernel}-smp(vermagic) = %{_kernel_ver}}
-Requires(post,postun):	/sbin/depmod
-
-%description -n kernel%{_alt_kernel}-smp-net-p2p
-iptables-p2p is a P2P match module for iptables. It supports the
-detection of the following protocols: FastTrack (KaZaa, Grokster,
-...), eDonkey (eDonkey, eMule, ...), Direct Connect, Gnutella (regular
-clients and Shareaza's gnutella 2), BitTorrent, OpenFT (giFT).
-
-This package contains Linux SMP kernel module.
-
-%description -n kernel%{_alt_kernel}-smp-net-p2p -l pl.UTF-8
-iptables-p2p to moduł dopasowywania P2P dla iptables. Obsługuje
-wykrywanie następujących protokołów: FastTrack (KaZaa, Grokster...),
-eDonkey (eDonkey, eMule...), Direct Connect, Gnutella (zwykli klienci
-oraz gnutella 2 Shareazy), BitTorrent, OpenFT (giFT).
-
-Ten pakiet zawiera moduł jądra Linuksa SMP.
-
 %package -n iptables-p2p
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
 Summary(pl.UTF-8):	P2P - rozszerzenie filtra pakietów identyfikujące ruch P2P
+Release:	%{rel}
 Group:		Base/Kernel
 Requires:	iptables
 
@@ -129,6 +105,8 @@ oraz gnutella 2 Shareazy), BitTorrent, OpenFT (giFT).
 %build
 %if %{with userspace}
 # iptables module
+# IPTABLES_VERSION=`rpm -q --queryformat '%{V}' iptables`
+IPTABLES_VERSION="%{iptables_ver}"
 cat << 'EOF' > iptables/Makefile
 CC		= %{__cc}
 CFLAGS		= %{rpmcflags} -fPIC -DIPTABLES_VERSION=\"%{iptables_ver}\"
@@ -172,24 +150,10 @@ rm -rf $RPM_BUILD_ROOT
 %postun -n kernel%{_alt_kernel}-net-p2p
 %depmod %{_kernel_ver}
 
-%post -n kernel%{_alt_kernel}-smp-net-p2p
-%depmod %{_kernel_ver}smp
-
-%postun -n kernel%{_alt_kernel}-smp-net-p2p
-%depmod %{_kernel_ver}smp
-
 %if %{with kernel}
-%if %{with up} || %{without dist_kernel}
 %files -n kernel%{_alt_kernel}-net-p2p
 %defattr(644,root,root,755)
 /lib/modules/%{_kernel_ver}/kernel/net/ipv4/netfilter/*
-%endif
-
-%if %{with smp} && %{with dist_kernel}
-%files -n kernel%{_alt_kernel}-smp-net-p2p
-%defattr(644,root,root,755)
-/lib/modules/%{_kernel_ver}smp/kernel/net/ipv4/netfilter/*
-%endif
 %endif
 
 %if %{with userspace}
