@@ -60,6 +60,7 @@ Release:	%{rel}@%{_kernel_ver_str}
 Group:		Base/Kernel
 %{?with_dist_kernel:%requires_releq_kernel_up}
 Requires(post,postun):	/sbin/depmod
+Obsoletes:	kernel%{_alt_kernel}-smp-net-p2p
 
 %description -n kernel%{_alt_kernel}-net-p2p
 iptables-p2p is a P2P match module for iptables. It supports the
