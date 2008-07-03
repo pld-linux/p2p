@@ -23,7 +23,7 @@
 
 %define		pname	p2p
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
-Summary(pl):	P2P - rozszerzenie filtra pakietów identyfikuj±ce ruch P2P
+Summary(pl.UTF-8):	P2P - rozszerzenie filtra pakietÃ³w identyfikujÄ…ce ruch P2P
 Name:		%{pname}%{_alt_kernel}
 Version:	0.3.0a
 Release:	63
@@ -49,17 +49,17 @@ clients and Shareaza's gnutella 2), BitTorrent, OpenFT (giFT).
 
 This package contains Linux kernel module.
 
-%description -l pl
-iptables-p2p to modu³ dopasowywania P2P dla iptables. Obs³uguje
-wykrywanie nastêpuj±cych protoko³ów: FastTrack (KaZaa, Grokster...),
+%description -l pl.UTF-8
+iptables-p2p to moduÅ‚ dopasowywania P2P dla iptables. ObsÅ‚uguje
+wykrywanie nastÄ™pujÄ…cych protokoÅ‚Ã³w: FastTrack (KaZaa, Grokster...),
 eDonkey (eDonkey, eMule...), Direct Connect, Gnutella (zwykli klienci
 oraz gnutella 2 Shareazy), BitTorrent, OpenFT (giFT).
 
-Ten pakiet zawiera modu³ j±dra Linuksa.
+Ten pakiet zawiera moduÅ‚ jÄ…dra Linuksa.
 
 %package -n kernel%{_alt_kernel}-net-p2p
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
-Summary(pl):	P2P - rozszerzenie filtra pakietów identyfikuj±ce ruch P2P
+Summary(pl.UTF-8):	P2P - rozszerzenie filtra pakietÃ³w identyfikujÄ…ce ruch P2P
 Group:		Base/Kernel
 %{?with_dist_kernel:Requires:	kernel%{_alt_kernel}(vermagic) = %{_kernel_ver}}
 Requires(post,postun):	/sbin/depmod
@@ -72,17 +72,17 @@ clients and Shareaza's gnutella 2), BitTorrent, OpenFT (giFT).
 
 This package contains Linux kernel module.
 
-%description -n kernel%{_alt_kernel}-net-p2p -l pl
-iptables-p2p to modu³ dopasowywania P2P dla iptables. Obs³uguje
-wykrywanie nastêpuj±cych protoko³ów: FastTrack (KaZaa, Grokster...),
+%description -n kernel%{_alt_kernel}-net-p2p -l pl.UTF-8
+iptables-p2p to moduÅ‚ dopasowywania P2P dla iptables. ObsÅ‚uguje
+wykrywanie nastÄ™pujÄ…cych protokoÅ‚Ã³w: FastTrack (KaZaa, Grokster...),
 eDonkey (eDonkey, eMule...), Direct Connect, Gnutella (zwykli klienci
 oraz gnutella 2 Shareazy), BitTorrent, OpenFT (giFT).
 
-Ten pakiet zawiera modu³ j±dra Linuksa.
+Ten pakiet zawiera moduÅ‚ jÄ…dra Linuksa.
 
 %package -n kernel%{_alt_kernel}-smp-net-p2p
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
-Summary(pl):	P2P - rozszerzenie filtra pakietów identyfikuj±ce ruch P2P
+Summary(pl.UTF-8):	P2P - rozszerzenie filtra pakietÃ³w identyfikujÄ…ce ruch P2P
 Group:		Base/Kernel
 %{?with_dist_kernel:Requires:	kernel%{_alt_kernel}-smp(vermagic) = %{_kernel_ver}}
 Requires(post,postun):	/sbin/depmod
@@ -95,17 +95,17 @@ clients and Shareaza's gnutella 2), BitTorrent, OpenFT (giFT).
 
 This package contains Linux SMP kernel module.
 
-%description -n kernel%{_alt_kernel}-smp-net-p2p -l pl
-iptables-p2p to modu³ dopasowywania P2P dla iptables. Obs³uguje
-wykrywanie nastêpuj±cych protoko³ów: FastTrack (KaZaa, Grokster...),
+%description -n kernel%{_alt_kernel}-smp-net-p2p -l pl.UTF-8
+iptables-p2p to moduÅ‚ dopasowywania P2P dla iptables. ObsÅ‚uguje
+wykrywanie nastÄ™pujÄ…cych protokoÅ‚Ã³w: FastTrack (KaZaa, Grokster...),
 eDonkey (eDonkey, eMule...), Direct Connect, Gnutella (zwykli klienci
 oraz gnutella 2 Shareazy), BitTorrent, OpenFT (giFT).
 
-Ten pakiet zawiera modu³ j±dra Linuksa SMP.
+Ten pakiet zawiera moduÅ‚ jÄ…dra Linuksa SMP.
 
 %package -n iptables-p2p
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
-Summary(pl):	P2P - rozszerzenie filtra pakietów identyfikuj±ce ruch P2P
+Summary(pl.UTF-8):	P2P - rozszerzenie filtra pakietÃ³w identyfikujÄ…ce ruch P2P
 Group:		Base/Kernel
 Requires:	iptables
 
@@ -115,9 +115,9 @@ detection of the following protocols: FastTrack (KaZaa, Grokster,
 ...), eDonkey (eDonkey, eMule, ...), Direct Connect, Gnutella (regular
 clients and Shareaza's gnutella 2), BitTorrent, OpenFT (giFT).
 
-%description -n iptables-p2p -l pl
-iptables-p2p to modu³ dopasowywania P2P dla iptables. Obs³uguje
-wykrywanie nastêpuj±cych protoko³ów: FastTrack (KaZaa, Grokster...),
+%description -n iptables-p2p -l pl.UTF-8
+iptables-p2p to moduÅ‚ dopasowywania P2P dla iptables. ObsÅ‚uguje
+wykrywanie nastÄ™pujÄ…cych protokoÅ‚Ã³w: FastTrack (KaZaa, Grokster...),
 eDonkey (eDonkey, eMule...), Direct Connect, Gnutella (zwykli klienci
 oraz gnutella 2 Shareazy), BitTorrent, OpenFT (giFT).
 
