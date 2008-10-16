@@ -17,16 +17,19 @@
 %if "%{_alt_kernel}" != "%{nil}"
 %undefine	with_userspace
 %endif
+%if %{without userspace}
+# nothing to be placed to debuginfo package
+%define		_enable_debug_packages	0
+%endif
 
-%define		no_install_post_compress_modules	1
+%define		rel 	65
 %define		iptables_ver	1.3.3
-
 %define		pname	p2p
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
 Summary(pl.UTF-8):	P2P - rozszerzenie filtra pakietów identyfikujące ruch P2P
 Name:		%{pname}%{_alt_kernel}
 Version:	0.3.0a
-Release:	63
+Release:	%{rel}
 License:	GPL
 Group:		Base/Kernel
 Source0:	http://dl.sourceforge.net/iptables-p2p/iptables-p2p-%{version}.tar.gz
@@ -60,9 +63,10 @@ Ten pakiet zawiera moduł jądra Linuksa.
 %package -n kernel%{_alt_kernel}-net-p2p
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
 Summary(pl.UTF-8):	P2P - rozszerzenie filtra pakietów identyfikujące ruch P2P
+Release:	%{rel}@%{_kernel_vermagic}
 Group:		Base/Kernel
-%{?with_dist_kernel:Requires:	kernel%{_alt_kernel}(vermagic) = %{_kernel_ver}}
 Requires(post,postun):	/sbin/depmod
+%{?with_dist_kernel:Requires:	kernel%{_alt_kernel}(vermagic) = %{_kernel_ver}}
 
 %description -n kernel%{_alt_kernel}-net-p2p
 iptables-p2p is a P2P match module for iptables. It supports the
@@ -83,9 +87,10 @@ Ten pakiet zawiera moduł jądra Linuksa.
 %package -n kernel%{_alt_kernel}-smp-net-p2p
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
 Summary(pl.UTF-8):	P2P - rozszerzenie filtra pakietów identyfikujące ruch P2P
+Release:	%{rel}@%{_kernel_vermagic}
 Group:		Base/Kernel
-%{?with_dist_kernel:Requires:	kernel%{_alt_kernel}-smp(vermagic) = %{_kernel_ver}}
 Requires(post,postun):	/sbin/depmod
+%{?with_dist_kernel:Requires:	kernel%{_alt_kernel}-smp(vermagic) = %{_kernel_ver}}
 
 %description -n kernel%{_alt_kernel}-smp-net-p2p
 iptables-p2p is a P2P match module for iptables. It supports the
@@ -106,6 +111,7 @@ Ten pakiet zawiera moduł jądra Linuksa SMP.
 %package -n iptables-p2p
 Summary:	P2P - a netfilter extension to identify P2P filesharing traffic
 Summary(pl.UTF-8):	P2P - rozszerzenie filtra pakietów identyfikujące ruch P2P
+Release:	%{rel}
 Group:		Base/Kernel
 Requires:	iptables
 
@@ -129,6 +135,8 @@ oraz gnutella 2 Shareazy), BitTorrent, OpenFT (giFT).
 %build
 %if %{with userspace}
 # iptables module
+# IPTABLES_VERSION=`rpm -q --queryformat '%{V}' iptables`
+IPTABLES_VERSION="%{iptables_ver}"
 cat << 'EOF' > iptables/Makefile
 CC		= %{__cc}
 CFLAGS		= %{rpmcflags} -fPIC -DIPTABLES_VERSION=\"%{iptables_ver}\"
