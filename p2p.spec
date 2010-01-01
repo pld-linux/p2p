@@ -35,7 +35,7 @@ URL:		http://sourceforge.net/projects/iptables-p2p/
 %{?with_dist_kernel:BuildRequires:	kernel%{_alt_kernel}-module-build}
 BuildRequires:	rpmbuild(macros) >= 1.330
 %endif
-Buildroot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 iptables-p2p is a P2P match module for iptables. It supports the
